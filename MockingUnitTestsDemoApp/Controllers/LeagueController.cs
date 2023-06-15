@@ -16,9 +16,13 @@ namespace MockingUnitTestsDemoApp.Controllers
             _leagueService = leagueService;
         }
 
+        // Action method for the Index page
         public IActionResult Index()
         {
+            // Retrieve all leagues from the league service
             var leagues = _leagueService.GetAll();
+            
+            // Pass the leagues to the view and return it
             return View(leagues);
         }
     }
