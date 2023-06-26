@@ -9,40 +9,37 @@ using System.Threading.Tasks;
 
 namespace MockingUnitTestsDemoApp.Implementation.Services
 {
+    // Represents a service for managing teams
     public class TeamService : ITeamService
     {
-        private readonly ITeamRepository _teamRepository;
-        private readonly ILeagueRepository _leagueRepository;
+        private readonly ITeamRepository _teamRepository; // Repository for team data
+        private readonly ILeagueRepository _leagueRepository; // Repository for league data
 
+        // Constructor that takes two repository instances as parameters
         public TeamService(ITeamRepository teamRepository,
                            ILeagueRepository leagueRepository)
         {
-            _teamRepository = teamRepository;
-            _leagueRepository = leagueRepository;
+            _teamRepository = teamRepository; // Assign the team repository instance
+            _leagueRepository = leagueRepository; // Assign the league repository instance
         }
 
+        // Searches for teams based on search criteria
         public List<Team> Search(TeamSearch search)
         {
-            //If we are searching for an invalid or unknown League...
+            var isValidLeague = _leagueRepository.IsValid(search.LeagueID); // Check if the league is valid
 
-            var isValidLeague = _leagueRepository.IsValid(search.LeagueID);
             if (!isValidLeague)
             {
-                return new List<Team>();  //Return an empty list.
+                return new List<Team>(); // Return an empty list if the league is invalid
             }
-                
 
-            //Otherwise get all teams in the specified league...
+            var allTeams = _teamRepository.GetForLeague(search.LeagueID); // Retrieve all teams for the league
 
-            var allTeams = _teamRepository.GetForLeague(search.LeagueID);
-
-            //... and filter them by the specified Founding Date and Direction.
-
+            // Filter teams based on founding date and direction
             if (search.Direction == Enums.SearchDateDirection.OlderThan)
             {
                 return allTeams.Where(x => x.FoundingDate <= search.FoundingDate).ToList();
             }
-
             else
             {
                 return allTeams.Where(x => x.FoundingDate >= search.FoundingDate).ToList();
