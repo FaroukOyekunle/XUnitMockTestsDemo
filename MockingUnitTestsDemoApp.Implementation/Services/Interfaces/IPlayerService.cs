@@ -9,8 +9,10 @@ namespace MockingUnitTestsDemoApp.Implementation.Services.Interfaces
 {
     public interface IPlayerService
     {
+        // Declare a method signature for getting a player by ID
         Player GetByID(int id);
 
+        // Declare a method signature for getting players for a specific league
         List<Player> GetForLeague(int leagueID);
     }
 }
