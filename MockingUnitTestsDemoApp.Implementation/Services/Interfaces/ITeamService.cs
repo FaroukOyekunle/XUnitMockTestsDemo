@@ -9,6 +9,7 @@ namespace MockingUnitTestsDemoApp.Implementation.Services.Interfaces
 {
     public interface ITeamService
     {
+        // Declare a method signature for searching teams
         List<Team> Search(TeamSearch search);
     }
 }
